@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_apps"
+        android:icon="@drawable/ic_apps"
+        android:title="Mes Apps"/>
+    <item android:id="@+id/nav_categories"
+        android:icon="@drawable/ic_categories"
+        android:title="Catégories"/>
+    <item android:id="@+id/nav_panier"
+        android:icon="@drawable/ic_panier"
+        android:title="Panier"/>
+    <item android:id="@+id/nav_recherche"
+        android:icon="@drawable/ic_search"
+        android:title="Recherche"/>
+</menu>
