@@ -33,6 +33,7 @@
         <activity android:name=".CompteBienCree" />
         <activity android:name=".ValidationChoixPreference" />
         <activity android:name=".SeConnecter" />
+        <activity android:name=".AccueilActivity" />
 
     </application>
 

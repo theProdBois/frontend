@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class SeConnecter : AppCompatActivity() {
@@ -26,7 +27,8 @@ class SeConnecter : AppCompatActivity() {
         val btnretour = findViewById<TextView>(R.id.btnRetour)
 
         buttonLogin.setOnClickListener {
-            val intent = Intent(this, ValidationChoixPreference::class.java)
+            Toast.makeText(this, "Bouton cliqué", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, AccueilActivity::class.java)
             startActivity(intent)
         }
 
