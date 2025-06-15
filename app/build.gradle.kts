@@ -32,13 +32,18 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
+
     kotlinOptions {
         jvmTarget = "11"
     }
 
     buildFeatures {
+        compose = true
         dataBinding = true
         viewBinding = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
 }
 
@@ -56,5 +61,16 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
 
 
+
+    implementation(platform(libs.compose.bom))
+
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.preview)
+    implementation(libs.activity.compose)
+    implementation(libs.material.icons.extended)
+    implementation("androidx.compose.foundation:foundation:1.8.2")
+
+    debugImplementation(libs.compose.ui.tooling)
 
 }

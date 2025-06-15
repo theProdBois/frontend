@@ -2,76 +2,201 @@ package tunisStore.app
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.InputType
-import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.*
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import tunisStore.app.ui.theme.OrangePrimary
+import tunisStore.app.ui.theme.RedColor
 
-class SeConnecter : AppCompatActivity() {
-
-    private lateinit var passwordEditText: EditText
-    private lateinit var eyeImageView: ImageView
-    private var passwordVisible = false
-
-    override fun    onCreate(savedInstanceState: Bundle?) {
+class SeConnecter : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.se_connecter)
+        setContent {
+            SeConnecterScreen()
+        }
+    }
+}
 
-        passwordEditText = findViewById(R.id.editTextPassword)
-        eyeImageView = findViewById(R.id.eyeIcon)
-        val buttonLogin = findViewById<Button>(R.id.buttonLogin)
-        val btnretour = findViewById<TextView>(R.id.btnRetour)
+@Composable
+fun SeConnecterScreen() {
+    val context = LocalContext.current
 
-        buttonLogin.setOnClickListener {
-            Toast.makeText(this, "Bouton cliqué", Toast.LENGTH_SHORT).show()
-            val intent = Intent(this, AccueilActivity::class.java)
-            startActivity(intent)
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
+    var rememberMe by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .padding(bottom = 16.dp)
+    ) {
+        // En-tête orange
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+                .background(OrangePrimary)
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "< Retour",
+                color = Color.White,
+                fontSize = 16.sp,
+                modifier = Modifier
+                    .clickable {
+                        context.startActivity(Intent(context, Bienvenue::class.java))
+                    }
+            )
+            Spacer(modifier = Modifier.width(70.dp))
+            Text(
+                text = "Se connecter",
+                color = Color.White,
+                fontSize = 20.sp,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(top = 10.dp)
+            )
         }
 
-        btnretour.setOnClickListener {
-            val intent = Intent(this, Bienvenue::class.java)
-            startActivity(intent)
-        }
+        // Corps du formulaire
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .fillMaxWidth()
+                .weight(1f),
+            verticalArrangement = Arrangement.Top
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
 
-        eyeImageView.setOnClickListener {
-            passwordVisible = !passwordVisible
-            if (passwordVisible) {
-                passwordEditText.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-                eyeImageView.setImageResource(R.drawable.ic_eye)
-            } else {
-                passwordEditText.inputType =
-                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-                eyeImageView.setImageResource(R.drawable.ic_eye_closed)
+            Text("Adresse e-mail ou numéro de téléphone", fontSize = 14.sp)
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                placeholder = { Text("adresse@gmail.com") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                singleLine = true
+            )
+
+            Text("Mot de passe", fontSize = 14.sp)
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                placeholder = { Text("Mot de passe") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                singleLine = true,
+                visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                trailingIcon = {
+                    IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        Icon(
+                            imageVector = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                            contentDescription = "Afficher le mot de passe"
+                        )
+                    }
+                }
+            )
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(vertical = 16.dp)
+            ) {
+                Checkbox(
+                    checked = rememberMe,
+                    onCheckedChange = { rememberMe = it }
+                )
+                Text("Se souvenir de moi")
             }
-            passwordEditText.setSelection(passwordEditText.text.length)
+
+            Button(
+                onClick = {
+                    context.startActivity(Intent(context, AccueilActivity::class.java))
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary)
+            ) {
+                Text("Se connecter", color = Color.White)
+            }
+
+            OutlinedButton(
+                onClick = {
+                    // TODO: Connexion Google
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_google),
+                    contentDescription = "Google",
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Se connecter avec Google")
+            }
+
+            Text(
+                "Vous n'avez pas de compte Tunis Store ?",
+                modifier = Modifier.fillMaxWidth(),
+                fontSize = 14.sp
+            )
+
+            Text(
+                text = "Inscrivez-vous",
+                color = RedColor,
+                fontSize = 14.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        // TODO: Rediriger vers Inscription
+                    },
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
+
+            Text(
+                text = "Mot de passe oublié ?",
+                color = RedColor,
+                fontSize = 14.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+                    .clickable {
+                        // TODO: Rediriger vers Mot de passe oublié
+                    },
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            )
         }
-
-        findViewById<Button>(R.id.buttonLogin).setOnClickListener {
-            // TODO: logique de connexion
-        }
-
-        findViewById<Button>(R.id.buttonGoogleLogin).setOnClickListener {
-            // TODO: logique de connexion Google
-        }
-
-        findViewById<TextView>(R.id.linkSignup).setOnClickListener {
-            // TODO: redirection vers page inscription
-        }
-
-        findViewById<TextView>(R.id.forgotPassword).setOnClickListener {
-            // TODO: redirection vers mot de passe oublié
-        }
-    }
-
-    fun onRetourClick(view: View) {
-        finish()
-    }
-
-    fun onTogglePasswordVisibility(view: View) {
-        eyeImageView.performClick()
     }
 }
