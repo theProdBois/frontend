@@ -2,7 +2,6 @@ package tunisStore.app.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -22,12 +21,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import tunisStore.app.R
+import tunisStore.app.ui.components.BottomNavigationBar
+import tunisStore.app.ui.components.Header
 import tunisStore.app.ui.data.fakeAppSections
 import tunisStore.app.ui.data.AppSectionData
 import tunisStore.app.ui.data.AppData
-import tunisStore.app.ui.theme.OrangePrimary
-import tunisStore.app.ui.screens.BottomNavigationBar
 
 @Composable
 fun AccueilScreen() {
@@ -45,44 +43,6 @@ fun AccueilScreen() {
             fakeAppSections.forEach { section ->
                 AppSection(section)
             }
-        }
-    }
-}
-
-@Composable
-fun Header() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .padding(horizontal = 50.dp, vertical = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_logo),
-            contentDescription = "Logo",
-            tint = OrangePrimary,
-            modifier = Modifier.size(32.dp)
-        )
-        Row {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_notification),
-                contentDescription = "Notifications",
-                tint = OrangePrimary,
-                modifier = Modifier
-                    .size(32.dp)
-                    .padding(end = 32.dp)
-                    .clickable { /* TO DO */ }
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.ic_user),
-                contentDescription = "Profile",
-                tint = OrangePrimary,
-                modifier = Modifier
-                    .size(32.dp)
-                    .clickable { /* TO DO */ }
-            )
         }
     }
 }

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -24,6 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tunisStore.app.R
+import tunisStore.app.ui.components.BottomNavigationBar
+import tunisStore.app.ui.components.Header
 import tunisStore.app.ui.data.AppData
 import tunisStore.app.ui.data.AppSectionData
 import tunisStore.app.ui.theme.OrangePrimary
@@ -31,7 +32,7 @@ import tunisStore.app.ui.theme.OrangePrimary
 @Composable
 fun CategoriesScreen() {
     Scaffold(
-        topBar = { CategoriesHeader() },
+        topBar = { Header() },
         bottomBar = { BottomNavigationBar(selectedTab = "Catégorie") }
     ) { padding ->
         Column(
@@ -39,7 +40,7 @@ fun CategoriesScreen() {
                 .padding(padding)
                 .background(Color.White)
                 .verticalScroll(rememberScrollState())
-                .padding(bottom = 72.dp) // to avoid nav bar
+                .padding(horizontal = 50.dp, vertical = 16.dp)
         ) {
             CategoriesTitle()
             CategoriesIntroText()
@@ -65,61 +66,6 @@ fun CategoriesScreen() {
                     apps = fakeFreeApps
                 ),
                 showSeeMore = true
-            )
-        }
-    }
-}
-
-@Composable
-fun CategoriesHeader() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(OrangePrimary)
-            .padding(horizontal = 16.dp, vertical = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_shoping_bag),
-            contentDescription = "Shopping",
-            tint = Color.White,
-            modifier = Modifier.size(32.dp)
-        )
-        Row {
-            Box {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_notification),
-                    contentDescription = "Notifications",
-                    tint = Color.White,
-                    modifier = Modifier.size(32.dp)
-                )
-                // Badge de notification
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .size(16.dp)
-                        .clip(CircleShape)
-                        .background(Color.Red)
-                ) {
-                    Text(
-                        text = "2",
-                        color = Color.White,
-                        fontSize = 10.sp,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            Icon(
-                painter = painterResource(id = R.drawable.ic_user),
-                contentDescription = "Profile",
-                tint = Color.White,
-                modifier = Modifier
-                    .size(32.dp)
-                    .clip(CircleShape)
-                    .background(Color.Gray.copy(alpha = 0.3f))
-                    .padding(4.dp)
             )
         }
     }

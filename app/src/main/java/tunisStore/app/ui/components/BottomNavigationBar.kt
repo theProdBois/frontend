@@ -1,4 +1,4 @@
-package tunisStore.app.ui.screens
+package tunisStore.app.ui.components
 
 import android.content.Context
 import android.content.Intent
@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import tunisStore.app.AccueilActivity
 import tunisStore.app.AchatActivity
 import tunisStore.app.CategorieActivity
 import tunisStore.app.RechercheActivity
@@ -36,7 +37,7 @@ fun BottomNavigationBar(selectedTab: String) {
             },
             label = { Text("Accueil", color = Color.Black) },
             selected = selectedTab == "Accueil",
-            onClick = { /* Déjà sur Accueil */ },
+            onClick = { startActivity(context, AccueilActivity()::class.java) },
             modifier = if (selectedTab == "Accueil") Modifier.background(OrangePrimary.copy(alpha = 0.2f)) else Modifier
         )
 
