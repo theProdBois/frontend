@@ -50,7 +50,7 @@ fun LoadingScreen() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Logo
-        Spacer(modifier = Modifier.height(150.dp))
+        Spacer(modifier = Modifier.height(320.dp))
         Image(
             painter = painterResource(id = R.drawable.ic_logo),
             contentDescription = "Logo",

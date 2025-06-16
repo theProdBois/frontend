@@ -34,6 +34,9 @@
         <activity android:name=".ValidationChoixPreference" />
         <activity android:name=".SeConnecter" />
         <activity android:name=".AccueilActivity" />
+        <activity android:name=".CategorieActivity" />
+        <activity android:name=".AchatActivity" />
+        <activity android:name=".RechercheActivity" />
 
     </application>
 

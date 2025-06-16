@@ -27,12 +27,13 @@ import tunisStore.app.ui.data.fakeAppSections
 import tunisStore.app.ui.data.AppSectionData
 import tunisStore.app.ui.data.AppData
 import tunisStore.app.ui.theme.OrangePrimary
+import tunisStore.app.ui.screens.BottomNavigationBar
 
 @Composable
 fun AccueilScreen() {
     Scaffold(
         topBar = { Header() },
-        bottomBar = { BottomNavigationBar() }
+        bottomBar = { BottomNavigationBar(selectedTab = "Accueil") }
     ) { padding ->
         Column(
             modifier = Modifier
@@ -61,30 +62,31 @@ fun Header() {
         Icon(
             painter = painterResource(id = R.drawable.ic_logo),
             contentDescription = "Logo",
-            tint = Color.White,
-            modifier = Modifier.size(32.dp).background(OrangePrimary)
+            tint = OrangePrimary,
+            modifier = Modifier.size(32.dp)
         )
         Row {
             Icon(
                 painter = painterResource(id = R.drawable.ic_notification),
                 contentDescription = "Notifications",
-                tint = Color.White,
+                tint = OrangePrimary,
                 modifier = Modifier
-                    .padding(end = 16.dp)
+                    .size(32.dp)
+                    .padding(end = 32.dp)
                     .clickable { /* TO DO */ }
-                    .background(OrangePrimary)
             )
             Icon(
                 painter = painterResource(id = R.drawable.ic_user),
                 contentDescription = "Profile",
-                tint = Color.White,
+                tint = OrangePrimary,
                 modifier = Modifier
+                    .size(32.dp)
                     .clickable { /* TO DO */ }
-                    .background(OrangePrimary)
             )
         }
     }
 }
+
 
 @Composable
 fun WelcomeBanner() {
@@ -212,35 +214,5 @@ fun AppCard(app: AppData) {
                 )
             }
         }
-    }
-}
-
-@Composable
-fun BottomNavigationBar() {
-    NavigationBar(containerColor = Color(0xFFFF5722)) {
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Home, contentDescription = "Accueil") },
-            label = { Text("Accueil") },
-            selected = true,
-            onClick = {}
-        )
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Category, contentDescription = "Catégories") },
-            label = { Text("Catégories") },
-            selected = false,
-            onClick = {}
-        )
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Achat") },
-            label = { Text("Achat") },
-            selected = false,
-            onClick = {}
-        )
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.Search, contentDescription = "Recherche") },
-            label = { Text("Recherche") },
-            selected = false,
-            onClick = {}
-        )
     }
 }
