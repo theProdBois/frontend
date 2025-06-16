@@ -49,7 +49,7 @@ fun CategoriesScreen() {
             // Sections d'applications
             AppSection(
                 AppSectionData(
-                    title = "Pagarits",
+                    title = "Payants",
                     apps = fakePaidApps
                 ),
                 showSeeMore = false
@@ -139,7 +139,7 @@ fun CategoriesFilterBar() {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .clickable { /* TO DO */ },
+            .clickable {  },
         horizontalArrangement = Arrangement.End,
 
     ) {
@@ -272,7 +272,6 @@ fun CategoryAppCard(app: AppData) {
                         shape = RoundedCornerShape(4.dp),
                         modifier = Modifier
                             .height(30.dp)
-                            .padding(bottom = 10.dp)
                     ) {
                         Text(
                             text = if (app.price.contains("Gratuits", true) || app.price.contains("Achat")) "Télécharger" else "Acheter",

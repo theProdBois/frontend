@@ -10,7 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,14 +21,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import tunisStore.app.ui.components.BottomNavigationBar
 import tunisStore.app.ui.components.Header
-import tunisStore.app.ui.data.fakeAppSections
 import tunisStore.app.ui.data.AppSectionData
 import tunisStore.app.ui.data.AppData
+import tunisStore.app.ui.viewmodels.AccueilViewModel
+import tunisStore.app.ui.viewmodels.UiState
 
 @Composable
-fun AccueilScreen() {
+fun AccueilScreen(viewModel: AccueilViewModel = viewModel<AccueilViewModel>()) {
+    val uiState by viewModel.uiState.collectAsState()
+
     Scaffold(
         topBar = { Header() },
         bottomBar = { BottomNavigationBar(selectedTab = "Accueil") }
@@ -37,16 +41,43 @@ fun AccueilScreen() {
             modifier = Modifier
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
-                .padding(bottom = 72.dp) // to avoid nav bar
+                .padding(bottom = 72.dp)
         ) {
             WelcomeBanner()
-            fakeAppSections.forEach { section ->
-                AppSection(section)
+            when (uiState) {
+                is UiState.Loading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+                is UiState.Success -> {
+                    (uiState as UiState.Success).sections.forEach { section ->
+                        AppSection(section)
+                    }
+                }
+                is UiState.Error -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = (uiState as UiState.Error).message,
+                            color = Color.Red,
+                            fontSize = 16.sp
+                        )
+                    }
+                }
             }
         }
     }
 }
-
 
 @Composable
 fun WelcomeBanner() {
@@ -86,7 +117,7 @@ fun AppSection(section: AppSectionData) {
                 text = "Voir plus",
                 fontSize = 14.sp,
                 color = Color.Gray,
-                modifier = Modifier.clickable { /* TO DO */ }
+                modifier = Modifier.clickable {  }
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -168,7 +199,7 @@ fun AppCard(app: AppData) {
                     )
                 }
                 Text(
-                    text = app.size,
+                    text = app.price,
                     fontSize = 14.sp,
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )

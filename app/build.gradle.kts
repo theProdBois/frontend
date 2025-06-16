@@ -48,7 +48,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -59,18 +58,16 @@ dependencies {
     kapt(libs.glide.compiler)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
-
-
+    implementation(libs.kotlinx.coroutines.android) // Add for coroutines
+    implementation(libs.androidx.lifecycle.viewmodel.compose) // Add for viewModel()
 
     implementation(platform(libs.compose.bom))
-
     implementation(libs.compose.ui)
     implementation(libs.compose.material3)
     implementation(libs.compose.preview)
     implementation(libs.activity.compose)
     implementation(libs.material.icons.extended)
-    implementation("androidx.compose.foundation:foundation:1.8.2")
+    implementation(libs.androidx.foundation)
 
     debugImplementation(libs.compose.ui.tooling)
-
 }

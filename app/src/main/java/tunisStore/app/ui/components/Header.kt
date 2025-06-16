@@ -31,23 +31,22 @@ fun Header() {
         Icon(
             painter = painterResource(id = R.drawable.ic_logo),
             contentDescription = "Logo",
-            tint = OrangePrimary,
+            tint = Color.Unspecified,
             modifier = Modifier.size(32.dp)
         )
         Row {
             Icon(
                 painter = painterResource(id = R.drawable.ic_notification),
                 contentDescription = "Notifications",
-                tint = OrangePrimary,
+                tint = Color.Unspecified,
                 modifier = Modifier
                     .size(32.dp)
-                    .padding(end = 32.dp)
                     .clickable { /* TO DO */ }
             )
             Icon(
                 painter = painterResource(id = R.drawable.ic_user),
                 contentDescription = "Profile",
-                tint = OrangePrimary,
+                tint = Color.Unspecified,
                 modifier = Modifier
                     .size(32.dp)
                     .clickable { /* TO DO */ }

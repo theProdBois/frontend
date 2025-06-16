@@ -1,5 +1,6 @@
 [versions]
 agp = "8.7.2"
+foundation = "1.8.2"
 kotlin = "1.9.24"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -12,10 +13,13 @@ compose-ui = "1.6.7"
 compose-bom = "2024.05.00"
 compose-compiler = "1.5.14"
 activity-compose = "1.9.0"
+kotlinx-coroutines-android = "1.7.3"
+androidx-lifecycle-viewmodel-compose = "2.8.6"
 
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "foundation" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -32,7 +36,8 @@ compose-material3 = { group = "androidx.compose.material3", name = "material3", 
 compose-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose-ui" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version = "1.6.7" }
-
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines-android" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle-viewmodel-compose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
