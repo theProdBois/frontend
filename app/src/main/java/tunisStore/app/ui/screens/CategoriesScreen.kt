@@ -41,6 +41,7 @@ fun CategoriesScreen() {
                 .background(Color.White)
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 50.dp, vertical = 16.dp)
+                .fillMaxSize()
         ) {
             CategoriesTitle()
             CategoriesIntroText()
@@ -132,23 +133,28 @@ fun CategoriesFilterBar() {
                 }
             }
         }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.clickable { /* TO DO */ }
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_filter),
-                contentDescription = "Filter",
-                tint = Color(0xFF696969),
-                modifier = Modifier.size(16.dp)
-            )
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = "Toutes les tarifications",
-                fontSize = 14.sp,
-                color = Color(0xFF696969)
-            )
-        }
+
+    }
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .clickable { /* TO DO */ },
+        horizontalArrangement = Arrangement.End,
+
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_filter),
+            contentDescription = "Filter",
+            tint = Color(0xFF696969),
+            modifier = Modifier.size(16.dp)
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = "Toutes les tarifications",
+            fontSize = 14.sp,
+            color = Color(0xFF696969)
+        )
     }
 }
 
@@ -192,7 +198,7 @@ fun AppSection(section: AppSectionData, showSeeMore: Boolean) {
 fun CategoryAppCard(app: AppData) {
     Card(
         modifier = Modifier
-            .width(160.dp)
+            .width(190.dp)
             .padding(end = 8.dp),
         shape = RoundedCornerShape(6.dp),
         colors = CardColors(
@@ -265,13 +271,12 @@ fun CategoryAppCard(app: AppData) {
                         ),
                         shape = RoundedCornerShape(4.dp),
                         modifier = Modifier
-                            .height(28.dp)
-                            .padding(top = 4.dp)
+                            .height(30.dp)
+                            .padding(bottom = 10.dp)
                     ) {
                         Text(
-                            text = if (app.price == "Gratuits" || app.price == "Achat Intégrée") "Telecharger" else "Acheter",
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold
+                            text = if (app.price.contains("Gratuits", true) || app.price.contains("Achat")) "Télécharger" else "Acheter",
+                            fontSize = 10.sp
                         )
                     }
                 }

@@ -105,7 +105,7 @@ fun RechercheScreen() {
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(horizontal = 50.dp, vertical = 16.dp)
+                .padding(horizontal = 20.dp, vertical = 16.dp)
                 .fillMaxSize()
         ) {
             Spacer(Modifier.height(16.dp))
