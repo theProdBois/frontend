@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tunisStore.app.R
 import tunisStore.app.SeConnecter
-import tunisStore.app.CreationCompte
+import tunisStore.app.CreationCompteActivity
 import tunisStore.app.ui.theme.OrangePrimary
 
 @Composable
@@ -105,7 +105,7 @@ fun BienvenueScreen() {
 
         OutlinedButton(
             onClick = {
-                context.startActivity(Intent(context, CreationCompte::class.java))
+                context.startActivity(Intent(context, CreationCompteActivity::class.java))
             },
             modifier = Modifier
                 .fillMaxWidth()

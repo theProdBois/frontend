@@ -46,7 +46,6 @@ fun CategoriesScreen() {
             CategoriesTitle()
             CategoriesIntroText()
             CategoriesFilterBar()
-            // Sections d'applications
             AppSection(
                 AppSectionData(
                     title = "Payants",

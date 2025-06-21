@@ -1,12 +1,10 @@
 package tunisStore.app.ui.screens
 
 import android.content.Intent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -22,7 +20,7 @@ import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tunisStore.app.Bienvenue
-import tunisStore.app.CreationCompte2
+import tunisStore.app.CreationCompte2Activity
 import tunisStore.app.R
 import tunisStore.app.ui.theme.OrangePrimary
 
@@ -157,7 +155,7 @@ fun CreationCompteScreen() {
                     Spacer(Modifier.height(20.dp))
                     Button(
                         onClick = {
-                            context.startActivity(Intent(context, CreationCompte2::class.java))
+                            context.startActivity(Intent(context, CreationCompte2Activity::class.java))
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = OrangePrimary

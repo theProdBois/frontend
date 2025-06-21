@@ -30,10 +30,10 @@
             android:name=".Bienvenue"
             android:exported="false" />
 
-        <activity android:name=".CreationCompte" />
-        <activity android:name=".CreationCompte2" />
-        <activity android:name=".CompteBienCree" />
-        <activity android:name=".ValidationChoixPreference" />
+        <activity android:name=".CreationCompteActivity" />
+        <activity android:name=".CreationCompte2Activity" />
+        <activity android:name=".CompteBienCreeActivity" />
+        <activity android:name=".ValidationChoixPreferenceActivity" />
         <activity android:name=".SeConnecter" />
         <activity android:name=".AccueilActivity" />
         <activity android:name=".CategorieActivity" />
