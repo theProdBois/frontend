@@ -50,7 +50,6 @@ fun SeConnecterScreen() {
             .fillMaxSize()
             .background(Color.White)
     ) {
-        // En-tête orange avec coins arrondis
         Box(
             modifier = Modifier
                 .fillMaxWidth()
