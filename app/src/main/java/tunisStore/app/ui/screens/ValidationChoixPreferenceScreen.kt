@@ -25,6 +25,8 @@ import tunisStore.app.ui.theme.OrangePrimary
 @Composable
 fun ValidationChoixPreferenceScreen() {
     val context = LocalContext.current
+    val selectedCategories = remember { mutableStateListOf<String>() }
+
 
     val categories = listOf(
         Categorie("Jeux", R.drawable.ic_jeux),
@@ -40,17 +42,12 @@ fun ValidationChoixPreferenceScreen() {
             .fillMaxSize()
             .background(Color(0xFFF2F2F2))
     ) {
-        // Header orange incurvé
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
-                .background(
-                    painterResource(R.drawable.header_background)
-                        .let { painter ->
-                            Brush.verticalGradient(listOf(OrangePrimary, OrangePrimary))
-                        }
-                )
+                .height(160.dp)
+                .background(OrangePrimary, RoundedCornerShape(bottomEnd = 32.dp, bottomStart = 32.dp))
+                .padding(horizontal = 24.dp, vertical = 16.dp)
         ) {
             Column(
                 modifier = Modifier
@@ -106,21 +103,32 @@ fun ValidationChoixPreferenceScreen() {
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .weight(1f),
+            modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(bottom = 16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(categories) { category ->
-                CategoryItem(category)
+                val isSelected = selectedCategories.contains(category.nom)
+                CategoryItem(
+                    categorie = category,
+                    isSelected = isSelected,
+                    onClick = {
+                        if (isSelected) {
+                            selectedCategories.remove(category.nom)
+                        } else {
+                            selectedCategories.add(category.nom)
+                        }
+                    }
+                )
             }
         }
 
+
         Button(
             onClick = {
-                context.startActivity(Intent(context, tunisStore.app.AccueilActivity::class.java))
+                // Ici tu peux stocker ou envoyer `selectedCategories`
+                // Par exemple : Log.d("Sélection", selectedCategories.joinToString())
+                context.startActivity(Intent(context, AccueilActivity::class.java))
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -138,13 +146,20 @@ fun ValidationChoixPreferenceScreen() {
     }
 }
 @Composable
-fun CategoryItem(categorie: Categorie) {
+fun CategoryItem(
+    categorie: Categorie,
+    isSelected: Boolean,
+    onClick: () -> Unit
+) {
+    val backgroundColor = if (isSelected) Color(0xFFFF4216) else Color.White
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
-            .aspectRatio(1f)
-            .background(Color.White, shape = RoundedCornerShape(16.dp))
+            .background(backgroundColor, shape = RoundedCornerShape(16.dp))
+            .clickable { onClick() }
             .padding(16.dp)
+            .wrapContentSize()
     ) {
         Image(
             painter = painterResource(id = categorie.iconRes),
@@ -156,7 +171,8 @@ fun CategoryItem(categorie: Categorie) {
             text = categorie.nom,
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium,
-            color = Color.Black
+            color = if (isSelected) Color.White else Color.Black,
+            textAlign = TextAlign.Center
         )
     }
 }

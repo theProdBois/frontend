@@ -58,8 +58,9 @@ dependencies {
     kapt(libs.glide.compiler)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
-    implementation(libs.kotlinx.coroutines.android) // Add for coroutines
-    implementation(libs.androidx.lifecycle.viewmodel.compose) // Add for viewModel()
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.coil.compose)
 
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)

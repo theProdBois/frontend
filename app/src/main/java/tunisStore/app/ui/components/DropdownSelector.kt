@@ -1,18 +1,19 @@
 package tunisStore.app.ui.components
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.ExposedDropdownMenuDefaults.outlinedTextFieldColors
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DropdownSelector(
     options: List<String>,
@@ -21,28 +22,35 @@ fun DropdownSelector(
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    Box {
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded }
+    ) {
         OutlinedTextField(
             value = selectedOption,
             onValueChange = {},
             readOnly = true,
             label = { Text("Sélectionner") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable { expanded = true },
             trailingIcon = {
-                Icon(Icons.Default.ArrowDropDown, contentDescription = null)
-            }
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+            },
+            modifier = Modifier
+                .menuAnchor()
+                .fillMaxWidth(),
+            colors = outlinedTextFieldColors(
+                contentColorFor(Color.Transparent)
+            )
         )
-        DropdownMenu(
+
+        ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            options.forEach { option ->
+            options.forEach { selectionOption ->
                 DropdownMenuItem(
-                    text = { Text(option) },
+                    text = { Text(selectionOption) },
                     onClick = {
-                        onOptionSelected(option)
+                        onOptionSelected(selectionOption)
                         expanded = false
                     }
                 )
