@@ -2,26 +2,20 @@ package tunisStore.app
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -49,64 +43,67 @@ fun SeConnecterScreen() {
     var passwordVisible by remember { mutableStateOf(false) }
     var rememberMe by remember { mutableStateOf(false) }
 
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(bottom = 16.dp)
     ) {
-        // En-tête orange
-        Row(
+        // En-tête orange avec coins arrondis
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp)
-                .background(OrangePrimary)
-                .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .height(160.dp)
+                .background(
+                    color = OrangePrimary,
+                    shape = RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp)
+                )
+                .padding(horizontal = 24.dp, vertical = 16.dp)
         ) {
-            Text(
-                text = "< Retour",
-                color = Color.White,
-                fontSize = 16.sp,
-                modifier = Modifier
-                    .clickable {
-                        context.startActivity(Intent(context, Bienvenue::class.java))
-                    }
-            )
-            Spacer(modifier = Modifier.width(70.dp))
-            Text(
-                text = "Se connecter",
-                color = Color.White,
-                fontSize = 20.sp,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(top = 10.dp)
-            )
+            Spacer(modifier = Modifier.height(5.dp))
+            Column {
+                Text(
+                    text = "< Retour",
+                    color = Color.White,
+                    fontSize = 16.sp,
+                    modifier = Modifier
+                        .clickable {
+                            context.startActivity(Intent(context, Bienvenue::class.java))
+                        }
+                )
+                Spacer(modifier = Modifier.height(32.dp))
+                Text(
+                    text = "Se connecter",
+                    color = Color.White,
+                    fontSize = 22.sp,
+                )
+            }
         }
 
         // Corps du formulaire
         Column(
             modifier = Modifier
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 24.dp, vertical = 24.dp)
                 .fillMaxWidth()
                 .weight(1f),
             verticalArrangement = Arrangement.Top
         ) {
-            Spacer(modifier = Modifier.height(16.dp))
-
             Text("Adresse e-mail ou numéro de téléphone", fontSize = 14.sp)
+            Spacer(modifier = Modifier.height(4.dp))
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 16.dp),
-                placeholder = { Text("adresse@gmail.com") },
+                placeholder = { Text("exemple@mail.com") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 singleLine = true
             )
 
             Text("Mot de passe", fontSize = 14.sp)
+            Spacer(modifier = Modifier.height(4.dp))
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
@@ -138,8 +135,24 @@ fun SeConnecterScreen() {
                 Text("Se souvenir de moi")
             }
 
+            errorMessage?.let {
+                Text(it, color = RedColor, fontSize = 14.sp, modifier = Modifier.padding(bottom = 8.dp))
+            }
+
             Button(
                 onClick = {
+                    // Validation
+                    if (email.isBlank() || password.isBlank()) {
+                        errorMessage = "Tous les champs sont obligatoires."
+                        return@Button
+                    }
+                    if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                        errorMessage = "Veuillez entrer une adresse e-mail valide."
+                        return@Button
+                    }
+
+                    // Success
+                    errorMessage = null
                     context.startActivity(Intent(context, AccueilActivity::class.java))
                 },
                 modifier = Modifier
