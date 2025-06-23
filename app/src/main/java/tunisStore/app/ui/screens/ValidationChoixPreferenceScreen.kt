@@ -151,7 +151,7 @@ fun CategoryItem(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-    val backgroundColor = if (isSelected) Color(0xFFFF4216) else Color.White
+    val backgroundColor = if (isSelected) Color(0xFFFF4216).copy(0.2f) else Color.White
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
