@@ -9,6 +9,8 @@ import kotlinx.coroutines.launch
 import tunisStore.app.ui.data.AppSectionData
 import tunisStore.app.ui.data.repository.AppRepository
 import tunisStore.app.ui.data.mappers.toAppData
+import tunisStore.app.ui.data.fakeAppSections
+
 
 sealed class UiState {
     object Loading : UiState()
@@ -25,6 +27,16 @@ class AccueilViewModel : ViewModel() {
         fetchApps()
     }
 
+    fun fetchApps() {
+        viewModelScope.launch {
+            try {
+                _uiState.value = UiState.Success(fakeAppSections)
+            } catch (e: Exception) {
+                _uiState.value = UiState.Error("Impossible de charger les données.")
+            }
+        }
+    }
+    /*
     fun fetchApps() {
         viewModelScope.launch {
             try {
@@ -47,8 +59,15 @@ class AccueilViewModel : ViewModel() {
                 _uiState.value = UiState.Success(sections)
             } catch (e: Exception) {
                 e.printStackTrace()
-                _uiState.value = UiState.Error("Erreur de chargement: ${e.message ?: "Unknown error"}")
+                val messageUtilisateur = when (e) {
+                    is java.net.UnknownHostException -> "Connexion impossible. Vérifiez votre connexion Internet."
+                    is java.net.SocketTimeoutException -> "Le serveur ne répond pas. Veuillez réessayer plus tard."
+                    else -> "Une erreur s’est produite. Veuillez réessayer plus tard."
+                }
+                _uiState.value = UiState.Error(messageUtilisateur)
+
             }
         }
     }
+    */
 }

@@ -16,7 +16,7 @@
         android:networkSecurityConfig="@xml/network_security_config">
 
         <activity
-            android:name=".SeConnecter"
+            android:name=".MainActivity"
             android:exported="true">
 
             <intent-filter>
@@ -26,13 +26,12 @@
 
         </activity>
 
-        <activity android:name=".MainActivity"/>
         <activity android:name=".Bienvenue" />
         <activity android:name=".CreationCompteActivity" />
         <activity android:name=".CreationCompte2Activity" />
         <activity android:name=".CompteBienCreeActivity" />
         <activity android:name=".ValidationChoixPreferenceActivity" />
-        <!-- <activity android:name=".SeConnecter" /> -->
+        <activity android:name=".SeConnecter" />
         <activity android:name=".AccueilActivity" />
         <activity android:name=".CategorieActivity" />
         <activity android:name=".AchatActivity" />

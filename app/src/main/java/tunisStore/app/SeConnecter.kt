@@ -192,7 +192,7 @@ fun SeConnecterScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        // TODO: Rediriger vers Inscription
+                        context.startActivity(Intent(context, CreationCompteActivity::class.java))
                     },
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center
             )

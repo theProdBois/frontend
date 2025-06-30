@@ -23,14 +23,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tunisStore.app.R
+import tunisStore.app.ui.components.AppDetailsModal
 import tunisStore.app.ui.components.BottomNavigationBar
 import tunisStore.app.ui.components.Header
 import tunisStore.app.ui.data.AppData
 import tunisStore.app.ui.data.AppSectionData
 import tunisStore.app.ui.theme.OrangePrimary
 
+
+
 @Composable
 fun CategoriesScreen() {
+    var selectedApp by remember { mutableStateOf<AppData?>(null) }
+    if (selectedApp != null) {
+        AppDetailsModal(app = selectedApp!!, onClose = { selectedApp = null })
+    }
+
     Scaffold(
         topBar = { Header() },
         bottomBar = { BottomNavigationBar(selectedTab = "Catégorie") }
@@ -47,26 +55,23 @@ fun CategoriesScreen() {
             CategoriesIntroText()
             CategoriesFilterBar()
             AppSection(
-                AppSectionData(
-                    title = "Payants",
-                    apps = fakePaidApps
-                ),
-                showSeeMore = false
+                AppSectionData("Payants", fakePaidApps),
+                showSeeMore = false,
+                onAppClick = { selectedApp = it }
             )
+
             AppSection(
-                AppSectionData(
-                    title = "Premium",
-                    apps = fakePremiumApps
-                ),
-                showSeeMore = true
+                AppSectionData("Premium", fakePremiumApps),
+                showSeeMore = true,
+                onAppClick = { selectedApp = it }
             )
+
             AppSection(
-                AppSectionData(
-                    title = "Gratuits",
-                    apps = fakeFreeApps
-                ),
-                showSeeMore = true
+                AppSectionData("Gratuits", fakeFreeApps),
+                showSeeMore = true,
+                onAppClick = { selectedApp = it }
             )
+
         }
     }
 }
@@ -158,7 +163,7 @@ fun CategoriesFilterBar() {
 }
 
 @Composable
-fun AppSection(section: AppSectionData, showSeeMore: Boolean) {
+fun AppSection(section: AppSectionData, showSeeMore: Boolean, onAppClick: (AppData) -> Unit) {
     Column(
         modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
     ) {
@@ -187,14 +192,14 @@ fun AppSection(section: AppSectionData, showSeeMore: Boolean) {
         Spacer(modifier = Modifier.height(8.dp))
         LazyRow(contentPadding = PaddingValues(end = 16.dp)) {
             items(section.apps) { app ->
-                CategoryAppCard(app)
+                CategoryAppCard(app, onClick = { onAppClick(app) })
             }
         }
     }
 }
 
 @Composable
-fun CategoryAppCard(app: AppData) {
+fun CategoryAppCard(app: AppData, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .width(190.dp)
@@ -207,7 +212,8 @@ fun CategoryAppCard(app: AppData) {
             disabledContentColor = Color.Gray
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        border = BorderStroke(1.dp, Color(0xFFFF4216))
+        border = BorderStroke(1.dp, Color(0xFFFF4216)),
+        onClick = onClick
     ) {
         Column(
             modifier = Modifier

@@ -8,8 +8,13 @@ data class AppData(
     val rating: Double,
     val size: String,
     val price: String,
-    val thumbnailRes: Int
+    val thumbnailRes: Int,
+    val developer: String = "",
+    val description: String = "",
+    val screenshots: List<Int> = listOf(R.drawable.ic_adobe_photoshop, R.drawable.ic_education, R.drawable.ic_education),
+
 )
+
 
 data class AppSectionData(
     val title: String,

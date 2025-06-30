@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import tunisStore.app.ui.components.AppDetailsModal
 import tunisStore.app.ui.components.BottomNavigationBar
 import tunisStore.app.ui.components.Header
 import tunisStore.app.ui.data.AppSectionData
@@ -30,50 +31,65 @@ import tunisStore.app.ui.viewmodels.AccueilViewModel
 import tunisStore.app.ui.viewmodels.UiState
 
 @Composable
-fun AccueilScreen(viewModel: AccueilViewModel = viewModel<AccueilViewModel>()) {
+fun AccueilScreen(viewModel: AccueilViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsState()
+    var selectedApp by remember { mutableStateOf<AppData?>(null) }
 
     Scaffold(
         topBar = { Header() },
         bottomBar = { BottomNavigationBar(selectedTab = "Accueil") }
     ) { padding ->
-        Column(
+        Box(
             modifier = Modifier
                 .padding(padding)
-                .verticalScroll(rememberScrollState())
-                .padding(bottom = 72.dp)
+                .fillMaxSize()
         ) {
-            WelcomeBanner()
-            when (uiState) {
-                is UiState.Loading -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(bottom = 72.dp)
+                    .fillMaxSize()
+            ) {
+                WelcomeBanner()
+
+                when (uiState) {
+                    is UiState.Loading -> {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
+
+                    is UiState.Success -> {
+                        (uiState as UiState.Success).sections.forEach { section ->
+                            AppSection(section, onAppClick = { selectedApp = it })
+                        }
+                    }
+
+                    is UiState.Error -> {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = (uiState as UiState.Error).message,
+                                color = Color.Red,
+                                fontSize = 16.sp
+                            )
+                        }
                     }
                 }
-                is UiState.Success -> {
-                    (uiState as UiState.Success).sections.forEach { section ->
-                        AppSection(section)
-                    }
-                }
-                is UiState.Error -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = (uiState as UiState.Error).message,
-                            color = Color.Red,
-                            fontSize = 16.sp
-                        )
-                    }
-                }
+            }
+
+            // 🟧 Modal toujours au-dessus grâce à Box
+            if (selectedApp != null) {
+                AppDetailsModal(app = selectedApp!!, onClose = { selectedApp = null })
             }
         }
     }
@@ -99,7 +115,7 @@ fun WelcomeBanner() {
 }
 
 @Composable
-fun AppSection(section: AppSectionData) {
+fun AppSection(section: AppSectionData, onAppClick: (AppData) -> Unit) {
     Column(modifier = Modifier.padding(vertical = 16.dp, horizontal = 50.dp)) {
         Row(
             modifier = Modifier
@@ -117,44 +133,37 @@ fun AppSection(section: AppSectionData) {
                 text = "Voir plus",
                 fontSize = 14.sp,
                 color = Color.Gray,
-                modifier = Modifier.clickable {  }
+                modifier = Modifier.clickable { /* Action voir plus */ }
             )
         }
+
         Spacer(modifier = Modifier.height(8.dp))
+
         LazyRow(contentPadding = PaddingValues(end = 16.dp)) {
             items(section.apps) { app ->
-                AppCard(app)
+                AppCard(app = app, onClick = { onAppClick(app) })
             }
         }
     }
 }
 
 @Composable
-fun AppCard(app: AppData) {
+fun AppCard(app: AppData, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .width(140.dp)
-            .padding(end = 8.dp),
+            .padding(end = 8.dp)
+            .clickable { onClick() }, // <- ici
         shape = RoundedCornerShape(8.dp),
-        colors = CardColors(
+        colors = CardDefaults.cardColors(
             containerColor = Color.White,
-            contentColor = Color.Black,
-            disabledContainerColor = Color.White,
-            disabledContentColor = Color.Gray
+            contentColor = Color.Black
         ),
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp,
-            pressedElevation = 8.dp,
-            focusedElevation = 6.dp,
-            hoveredElevation = 6.dp,
-            draggedElevation = 8.dp,
-            disabledElevation = 0.dp
-        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         border = BorderStroke(1.dp, Color(0xFFFF4216))
     ) {
         Column(
-            modifier = Modifier
-                .padding(8.dp)
+            modifier = Modifier.padding(8.dp)
         ) {
             Image(
                 painter = painterResource(id = app.thumbnailRes),
@@ -165,44 +174,19 @@ fun AppCard(app: AppData) {
                     .clip(RoundedCornerShape(8.dp))
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = app.name,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp,
-                maxLines = 1,
-                modifier = Modifier.padding(horizontal = 4.dp)
-            )
-            Text(
-                text = app.category,
-                fontSize = 14.sp,
-                color = Color(0xFF696969),
-                modifier = Modifier.padding(horizontal = 4.dp)
-            )
+            Text(app.name, fontWeight = FontWeight.SemiBold, fontSize = 16.sp, maxLines = 1)
+            Text(app.category, fontSize = 14.sp, color = Color(0xFF696969))
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 4.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        Icons.Default.Star,
-                        contentDescription = null,
-                        tint = Color.Black,
-                        modifier = Modifier.size(16.dp)
-                    )
+                    Icon(Icons.Default.Star, contentDescription = null, tint = Color.Black, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = app.rating.toString(),
-                        fontSize = 14.sp
-                    )
+                    Text(text = app.rating.toString(), fontSize = 14.sp)
                 }
-                Text(
-                    text = app.price,
-                    fontSize = 14.sp,
-                    modifier = Modifier.align(Alignment.CenterVertically)
-                )
+                Text(app.price, fontSize = 14.sp)
             }
         }
     }
