@@ -2,7 +2,7 @@ package tunisStore.app.ui.data.remote
 
 import com.google.gson.annotations.SerializedName
 
-data class ApkData(
+data class RemoteAppData(
     val id: String,
     @SerializedName("package_name") val packageName: String,
     val name: String,

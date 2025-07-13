@@ -48,7 +48,7 @@ fun CategoriesScreen() {
                 .padding(padding)
                 .background(Color.White)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 50.dp, vertical = 16.dp)
+                .padding(horizontal = 20.dp, vertical = 16.dp)
                 .fillMaxSize()
         ) {
             CategoriesTitle()
@@ -84,7 +84,7 @@ fun CategoriesTitle() {
         fontSize = 18.sp,
         color = Color.Black,
         modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(vertical = 8.dp)
     )
 }
 
@@ -96,7 +96,7 @@ fun CategoriesIntroText() {
         fontSize = 14.sp,
         color = Color.Black,
         modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 4.dp)
+            .padding(vertical = 4.dp)
     )
 }
 
@@ -108,7 +108,7 @@ fun CategoriesFilterBar() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -165,7 +165,7 @@ fun CategoriesFilterBar() {
 @Composable
 fun AppSection(section: AppSectionData, showSeeMore: Boolean, onAppClick: (AppData) -> Unit) {
     Column(
-        modifier = Modifier.padding(vertical = 16.dp, horizontal = 16.dp)
+        modifier = Modifier.padding(vertical = 16.dp)
     ) {
         Row(
             modifier = Modifier

@@ -18,7 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -42,6 +45,7 @@ fun AccueilScreen(viewModel: AccueilViewModel = viewModel()) {
         Box(
             modifier = Modifier
                 .padding(padding)
+                .systemBarsPadding()
                 .fillMaxSize()
         ) {
             Column(
@@ -97,26 +101,27 @@ fun AccueilScreen(viewModel: AccueilViewModel = viewModel()) {
 
 @Composable
 fun WelcomeBanner() {
-    Row(
-        modifier = Modifier.padding(vertical = 16.dp, horizontal = 50.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        Text("Bienvenue dans", fontSize = 16.sp)
-        Text(
-            "Tounsi Store",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            "- Téléchargez vos apps en dinars !",
-            fontSize = 16.sp
-        )
-    }
+    Text(
+        buildAnnotatedString {
+            append("Bienvenue dans ")
+            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, fontSize = 18.sp)) {
+                append("Tounsi Store")
+            }
+            append(" - Téléchargez vos apps en dinars !")
+        },
+        fontSize = 16.sp,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        lineHeight = 22.sp,
+        color = Color.Black
+    )
 }
+
 
 @Composable
 fun AppSection(section: AppSectionData, onAppClick: (AppData) -> Unit) {
-    Column(modifier = Modifier.padding(vertical = 16.dp, horizontal = 50.dp)) {
+    Column(modifier = Modifier.padding(vertical = 16.dp, horizontal = 20.dp)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -186,7 +191,7 @@ fun AppCard(app: AppData, onClick: () -> Unit) {
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(text = app.rating.toString(), fontSize = 14.sp)
                 }
-                Text(app.price, fontSize = 14.sp)
+                Text(app.size, fontSize = 14.sp)
             }
         }
     }

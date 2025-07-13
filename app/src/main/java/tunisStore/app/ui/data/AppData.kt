@@ -2,20 +2,24 @@ package tunisStore.app.ui.data
 
 import tunisStore.app.R
 
+import kotlinx.serialization.Serializable
+
+import kotlinx.serialization.Transient
+
+@Serializable
 data class AppData(
     val name: String,
     val category: String,
     val rating: Double,
     val size: String,
     val price: String,
-    val thumbnailRes: Int,
-    val developer: String = "",
-    val description: String = "",
-    val screenshots: List<Int> = listOf(R.drawable.ic_adobe_photoshop, R.drawable.ic_education, R.drawable.ic_education),
-
+    @Transient val thumbnailRes: Int = 0,
+    val developer: String? = null,
+    val description: String? = null,
+    @Transient val screenshots: List<Int> = emptyList()
 )
 
-
+@Serializable
 data class AppSectionData(
     val title: String,
     val apps: List<AppData>

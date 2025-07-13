@@ -1,5 +1,6 @@
 package tunisStore.app.ui.components
 
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -15,9 +16,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
-import tunisStore.app.R
 import tunisStore.app.ui.data.AppData
 import tunisStore.app.ui.theme.OrangePrimary
+import tunisStore.app.AchatActivity
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Composable
 fun AppDetailsModal(
@@ -36,18 +39,20 @@ fun AppDetailsModal(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.95f)
+                .fillMaxHeight() // Full height to cover bottom navigation
                 .align(Alignment.Center)
                 .clickable(enabled = false) {}
-                .background(Color.White, RoundedCornerShape(24.dp))
-                .padding(16.dp)
+                .background(
+                    Color.White,
+                    RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp, bottomStart = 0.dp, bottomEnd = 0.dp)
+                )
+                .padding(horizontal = 16.dp, vertical = 16.dp)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
             ) {
-
                 // Header
                 Row(
                     modifier = Modifier
@@ -63,7 +68,7 @@ fun AppDetailsModal(
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF333333),
                         fontSize = 18.sp,
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier.weight(1f)
                     )
                     IconButton(onClick = {}) {
                         Icon(Icons.Default.MoreVert, contentDescription = "Menu", tint = Color(0xFF333333))
@@ -85,7 +90,7 @@ fun AppDetailsModal(
 
                     Column {
                         Text(app.name, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color(0xFF333333))
-                        Text("Développeur : ${app.developer}", color = Color(0xFF666666))
+                        Text("Développeur : ${app.developer ?: "Inconnu"}", color = Color(0xFF666666))
                         Text(
                             text = if (app.price == "Gratuits") "Gratuit" else "Prix : ${app.price} DT",
                             color = if (app.price == "Gratuits") Color(0xFF666666) else OrangePrimary,
@@ -93,7 +98,7 @@ fun AppDetailsModal(
                         )
                         Text("Taille : ${app.size}", color = Color(0xFF666666))
                         Text("Note moyenne : ${app.rating} / 5", color = Color(0xFF333333), fontWeight = FontWeight.Bold)
-                        Text("Nombre d'avis : ${app.rating} commentaires", color = Color(0xFF333333))
+                        Text("Nombre d'avis : ${app.rating.toInt()} commentaires", color = Color(0xFF333333))
                     }
                 }
 
@@ -102,11 +107,21 @@ fun AppDetailsModal(
                 // Bouton principal
                 Button(
                     onClick = {
-                        Toast.makeText(
-                            context,
-                            if (app.price == "Gratuits") "Téléchargement..." else "Procéder à l'achat",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        if (app.price == "Gratuits") {
+                            Toast.makeText(context, "Téléchargement démarré...", Toast.LENGTH_SHORT).show()
+                            // Navigate to AchatActivity
+                            val intent = Intent(context, AchatActivity::class.java).apply {
+                                putExtra("APP_DATA", Json.encodeToString(app))
+                            }
+                            context.startActivity(intent)
+                        } else {
+                            Toast.makeText(context, "Procéder à l'achat", Toast.LENGTH_SHORT).show()
+                            // TODO: Navigate to payment screen in AchatActivity
+                            val intent = Intent(context, AchatActivity::class.java).apply {
+                                putExtra("APP_DATA", Json.encodeToString(app))
+                            }
+                            context.startActivity(intent)
+                        }
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary),
@@ -124,8 +139,24 @@ fun AppDetailsModal(
                 // Section Aperçu visuel
                 Text("Aperçu visuel", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color(0xFF333333))
                 Spacer(modifier = Modifier.height(8.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    app.screenshots.forEach {
+                Row(
+                    modifier = Modifier.horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    // Use actual screenshots if available, fallback to thumbnail
+                    if (app.screenshots.isNotEmpty()) {
+                        app.screenshots.forEach { screenshotRes ->
+                            Image(
+                                painter = painterResource(id = screenshotRes),
+                                contentDescription = "Capture d'écran de ${app.name}",
+                                modifier = Modifier
+                                    .size(120.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .border(1.dp, Color(0xFFE0E0E0), RoundedCornerShape(8.dp))
+                            )
+                        }
+                    } else {
+                        // Fallback to thumbnail if no screenshots
                         Image(
                             painter = painterResource(id = app.thumbnailRes),
                             contentDescription = "Icône de ${app.name}",
@@ -143,19 +174,19 @@ fun AppDetailsModal(
                 Text("À propos de cette application", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color(0xFF333333))
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    app.description,
+                    text = app.description ?: "Aucune description disponible",
                     color = Color(0xFF666666),
                     lineHeight = 20.sp
                 )
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                // Dev info (simplifié)
+                // Dev info
                 Text("Développeur & Support", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color(0xFF333333))
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("Email : crafftsifir@gmail.com", color = Color.Blue)
-                Text("Site : www.crafftsifir.mg", color = Color.Blue)
-                Text("Politique de confidentialité", color = Color.Blue)
+                Text("Email : crafftsifir@gmail.com", color = Color.Blue, modifier = Modifier.clickable { /* TODO: Open email */ })
+                Text("Site : www.crafftsifir.mg", color = Color.Blue, modifier = Modifier.clickable { /* TODO: Open website */ })
+                Text("Politique de confidentialité", color = Color.Blue, modifier = Modifier.clickable { /* TODO: Open privacy policy */ })
             }
         }
     }
