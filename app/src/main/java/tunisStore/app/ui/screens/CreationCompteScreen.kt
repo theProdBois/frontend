@@ -26,8 +26,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import tunisStore.app.Bienvenue
-import tunisStore.app.CreationCompte2Activity
+import tunisStore.app.auth.Bienvenue
+import tunisStore.app.auth.CreationCompte2Activity
 import tunisStore.app.R
 import tunisStore.app.ui.theme.OrangePrimary
 import java.util.Calendar
@@ -426,5 +426,3 @@ fun ShowDatePickerDialog(
         show()
     }
 }
-
-

@@ -22,8 +22,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import tunisStore.app.CreationCompteActivity
-import tunisStore.app.CompteBienCreeActivity
+import tunisStore.app.auth.CreationCompteActivity
+import tunisStore.app.auth.CompteBienCreeActivity
 import tunisStore.app.R
 import tunisStore.app.ui.theme.OrangePrimary
 import tunisStore.app.ui.components.DropdownSelector

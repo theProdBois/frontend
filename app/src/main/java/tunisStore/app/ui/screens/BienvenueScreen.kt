@@ -17,8 +17,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import tunisStore.app.R
-import tunisStore.app.SeConnecter
-import tunisStore.app.CreationCompteActivity
+import tunisStore.app.auth.SeConnecter
+import tunisStore.app.auth.CreationCompteActivity
 import tunisStore.app.ui.theme.OrangePrimary
 
 @Composable

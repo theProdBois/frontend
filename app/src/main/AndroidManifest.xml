@@ -26,12 +26,12 @@
 
         </activity>
 
-        <activity android:name=".Bienvenue" />
-        <activity android:name=".CreationCompteActivity" />
-        <activity android:name=".CreationCompte2Activity" />
-        <activity android:name=".CompteBienCreeActivity" />
+        <activity android:name=".auth.Bienvenue" />
+        <activity android:name=".auth.CreationCompteActivity" />
+        <activity android:name=".auth.CreationCompte2Activity" />
+        <activity android:name=".auth.CompteBienCreeActivity" />
         <activity android:name=".ValidationChoixPreferenceActivity" />
-        <activity android:name=".SeConnecter" />
+        <activity android:name=".auth.SeConnecter" />
         <activity android:name=".MainActivity" />
         <activity android:name=".CategorieActivity" />
         <activity android:name=".AchatActivity" />

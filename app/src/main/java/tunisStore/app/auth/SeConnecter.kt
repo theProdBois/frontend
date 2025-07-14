@@ -1,4 +1,4 @@
-package tunisStore.app
+package tunisStore.app.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -22,6 +22,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import tunisStore.app.AccueilActivity
+import tunisStore.app.R
 import tunisStore.app.ui.theme.OrangePrimary
 import tunisStore.app.ui.theme.RedColor
 
